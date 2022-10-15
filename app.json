@@ -1,0 +1,62 @@
+{
+    "name": "Bitcoin Price Ticker",
+    "description": "Just a simple bot to tick bitcoin price",
+    "logo": "https://s2.coinmarketcap.com/static/img/coins/200x200/1.png",
+    "keywords": [
+      "bitcoin",
+      "coinmarketcap"
+    ],
+    "website": "https://github.com/kevinnadar22/",
+    "env": {
+      "BOT_TOKEN": {
+        "description": "Your bot token from @botfather",
+        "value": ""
+      },
+      "API_ID": {
+        "description": "Get this value from https://my.telegram.org",
+        "value": ""
+      },
+      "API_HASH": {
+        "description": "Get this value from https://my.telegram.org",
+        "value": ""
+      },
+      "ADMINS": {
+        "description": "Seperate each id by comma",
+        "value": "1166625664, 1166625664"
+      },
+      "MESSAGE_ID": {
+        "description": "ID of the message",
+        "value": ""
+      },
+      "DETAIL_MESSAGE_ID": {
+        "description": "ID of the detail message",
+        "value": ""
+      },
+      "OWNER_ID": {
+        "description": "ID of the owner",
+        "value": ""
+      },
+      "WELCOME_IMAGE": {
+        "description": "Welcome image link",
+        "value": ""
+      },
+      "SLEEP_TIME": {
+        "description": "Sleep time of ticker in seconds",
+        "value": "300"
+      }
+
+    },
+    "addons": [],
+    "buildpacks": [
+      {
+        "url": "heroku/python"
+      }
+    ],
+    "formation": {
+      "worker": {
+        "quantity": 1,
+        "size": "free"
+      }
+    }
+  }
+  
