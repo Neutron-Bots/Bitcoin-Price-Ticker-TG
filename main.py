@@ -14,14 +14,6 @@ logging.getLogger().setLevel(logging.INFO)
 if REPLIT:
     from threading import Thread
 
-<<<<<<< HEAD
-Bot = Client(
-    "bot",
-    bot_token=BOT_TOKEN,
-    api_id=API_ID,
-    api_hash=API_HASH
-)
-=======
     from flask import Flask, jsonify
     app = Flask('')
     @app.route('/')
@@ -31,7 +23,6 @@ Bot = Client(
             "hosted":"replit.com",
         }
         return jsonify(res)
->>>>>>> 076e47e (init)
 
     def run():
         app.run(host="0.0.0.0", port=8000)
@@ -40,9 +31,6 @@ Bot = Client(
         server = Thread(target=run)
         server.start()
 
-<<<<<<< HEAD
-Bot.run()
-=======
 
 class Bot(Client):
 
@@ -71,4 +59,3 @@ class Bot(Client):
         logging.info('Bot Stopped Bye')
 
 Bot().run()
->>>>>>> 076e47e (init)
