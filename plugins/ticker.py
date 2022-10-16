@@ -6,10 +6,19 @@ from pycoingecko import CoinGeckoAPI
 from config import CHANNEL_ID, DETAIL_TEMPLATE, OWNER_ID, SLEEP_TIME, INFO_TEMPLATE
 from pyrogram.errors.exceptions.bad_request_400 import MessageNotModified
 cg = CoinGeckoAPI()
+from os.path import exists
+
 
 logging.getLogger().setLevel(logging.INFO)
 
 async def BTCTicker(client: Client):
+    if file_exists := exists("log.txt"):
+        with open("log.txt", "r") as f:
+            detail_message_id, info_message_id = f.read().split(",")
+            del_msg = await client.get_messages(CHANNEL_ID, [int(detail_message_id), int(info_message_id)])
+            for msg in del_msg:
+                await msg.delete()
+
     while 1:
         info_message = ""
         detail_message = ""
@@ -38,7 +47,7 @@ async def BTCTicker(client: Client):
                 last_updated=f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S%z}',
             )
             detail_message = await client.send_message(CHANNEL_ID, reply_text)
-            
+
             reply_text = INFO_TEMPLATE.format(
                 current_price=data['current_price'],
                 price_change_percentage_24h="%.2f" % data['price_change_percentage_24h'],
@@ -49,6 +58,10 @@ async def BTCTicker(client: Client):
                 last_updated=f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S%z}',
             )
             info_message = await client.send_photo(CHANNEL_ID, data['image'] ,reply_text)
+
+            with open("log.txt", "w") as f:
+                f.write(f"{detail_message.id},{info_message.id}")
+                f.close()
 
         except MessageNotModified as error:
             pass
