@@ -56,8 +56,6 @@ Change: {symbol}{price_change_24h}$
 24H Low = ${low_24h}🔻
 24H High = ${high_24h}💹
 
-Detailed Analysis - [Click Here]({detail_message_link})
-
 <i>Last Edited: 
 {last_updated}</i>
 """

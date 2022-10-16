@@ -8,6 +8,8 @@ cg = CoinGeckoAPI()
 
 async def BTCTicker(client: Client):
     while 1:
+        info_message = ""
+        detail_message = ""
         try:
             data = (cg.get_coins_markets(ids="bitcoin", vs_currency="usd"))[0]
 
@@ -18,18 +20,6 @@ async def BTCTicker(client: Client):
             market_cap_symbol = "🔻" if data['market_cap_change_percentage_24h'].__str__().startswith("-") else "📈"
             ath_symbol = "🔻" if data['ath_change_percentage'].__str__().startswith("-") else "📈"
             atl_symbol = "🔻" if data['atl_change_percentage'].__str__().startswith("-") else "📈"
-
-            reply_text = INFO_TEMPLATE.format(
-                current_price=data['current_price'],
-                price_change_percentage_24h="%.2f" % data['price_change_percentage_24h'],
-                symbol=symbol,
-                price_change_24h="%.2f" % data["price_change_24h"],
-                low_24h=data["low_24h"],
-                high_24h=data["high_24h"],
-                last_updated=f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S%z}',
-                detail_message_link=detail_message.link
-            )
-            await info_message.edit_caption(reply_text)
 
             reply_text = DETAIL_TEMPLATE.format(
                 market_cap=data["market_cap"],
@@ -47,10 +37,25 @@ async def BTCTicker(client: Client):
                 atl_symbol=atl_symbol,
                 last_updated=f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S%z}',
             )
-            await detail_message.edit_text(reply_text)
+            detail_message = await client.send_message(CHANNEL_ID, reply_text)
+            
+            reply_text = INFO_TEMPLATE.format(
+                current_price=data['current_price'],
+                price_change_percentage_24h="%.2f" % data['price_change_percentage_24h'],
+                symbol=symbol,
+                price_change_24h="%.2f" % data["price_change_24h"],
+                low_24h=data["low_24h"],
+                high_24h=data["high_24h"],
+                last_updated=f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S%z}',
+            )
+            info_message = await client.send_photo(CHANNEL_ID, data['image'] ,reply_text)
 
         except MessageNotModified as error:
             pass
         except Exception as e:
             await client.send_message(OWNER_ID, e)
-        await asyncio.sleep(SLEEP_TIME)
+        finally:
+            await asyncio.sleep(SLEEP_TIME)
+            if info_message and detail_message:
+                await info_message.delete()
+                await detail_message.delete()
