@@ -1,6 +1,5 @@
 import asyncio
 import logging
-import logging.config
 
 from pyrogram import Client
 

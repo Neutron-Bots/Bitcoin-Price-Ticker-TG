@@ -8,8 +8,6 @@ API_ID = int(os.environ.get("API_ID"))
 API_HASH = os.environ.get("API_HASH")
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 CHANNEL_ID = int(os.environ.get("CHANNEL_ID"))
-MESSAGE_ID = int(os.environ.get("MESSAGE_ID", "0"))
-DETAIL_MESSAGE_ID = int(os.environ.get("DETAIL_MESSAGE_ID", "0"))
 WELCOME_IMAGE = os.environ.get("WELCOME_IMAGE", "")
 OWNER_ID = int(os.environ.get("OWNER_ID"))
 
@@ -43,7 +41,7 @@ ${atl}
 ATL change percentage: 
 {atl_symbol}{atl_change_percentage}%
 
-<i>Last Edited: 
+<i>Last Updated: 
 {last_updated}</i>
 
 
@@ -56,7 +54,7 @@ Change: {symbol}{price_change_24h}$
 24H Low = ${low_24h}🔻
 24H High = ${high_24h}💹
 
-<i>Last Edited: 
+<i>Last Updated: 
 {last_updated}</i>
 """
 

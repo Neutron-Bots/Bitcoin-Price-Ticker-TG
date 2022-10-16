@@ -1,10 +1,13 @@
 import asyncio
 import datetime
+import logging
 from pyrogram import Client, types
 from pycoingecko import CoinGeckoAPI
-from config import CHANNEL_ID, DETAIL_MESSAGE_ID, DETAIL_TEMPLATE, MESSAGE_ID, OWNER_ID, SLEEP_TIME, INFO_TEMPLATE
+from config import CHANNEL_ID, DETAIL_TEMPLATE, OWNER_ID, SLEEP_TIME, INFO_TEMPLATE
 from pyrogram.errors.exceptions.bad_request_400 import MessageNotModified
 cg = CoinGeckoAPI()
+
+logging.getLogger().setLevel(logging.INFO)
 
 async def BTCTicker(client: Client):
     while 1:
@@ -12,9 +15,6 @@ async def BTCTicker(client: Client):
         detail_message = ""
         try:
             data = (cg.get_coins_markets(ids="bitcoin", vs_currency="usd"))[0]
-
-            info_message: types.Message = await client.get_messages(chat_id=CHANNEL_ID, message_ids=MESSAGE_ID)
-            detail_message: types.Message = await client.get_messages(chat_id=CHANNEL_ID, message_ids=DETAIL_MESSAGE_ID)
 
             symbol = "🔻" if data['price_change_percentage_24h'].__str__().startswith("-") else "📈"
             market_cap_symbol = "🔻" if data['market_cap_change_percentage_24h'].__str__().startswith("-") else "📈"
@@ -53,7 +53,7 @@ async def BTCTicker(client: Client):
         except MessageNotModified as error:
             pass
         except Exception as e:
-            await client.send_message(OWNER_ID, e)
+            await client.send_message(OWNER_ID, e.with_traceback)
         finally:
             await asyncio.sleep(SLEEP_TIME)
             if info_message and detail_message:
